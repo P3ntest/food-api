@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { Nutrition } from "../../generated/graphql";
 
 export const nutritionalFacts = z.object({
   calories: z.number().optional(),
@@ -14,7 +15,7 @@ export const nutritionalFacts = z.object({
   sodium: z.number().optional(),
 });
 
-export type NutritionalFacts = z.infer<typeof nutritionalFacts>;
+export type NutritionalFacts = z.infer<typeof nutritionalFacts> & Nutrition;
 
 export function fillNutritionalFacts(
   nutritionalFacts: NutritionalFacts

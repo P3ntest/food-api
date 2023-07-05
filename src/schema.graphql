@@ -6,6 +6,9 @@ type Ingredient {
   name: String!
   description: String
   nutrition: Nutrition
+  nutritionScore: NutritionScore
+  fluid: Boolean
+  natural: Boolean
 }
 
 type Nutrition {
@@ -14,10 +17,28 @@ type Nutrition {
   carbs: Float
   protein: Float
 }
-# The "Query" type is special: it lists all of the available queries that
-# clients can execute, along with the return type for each. In this
-# case, the "books" query returns an array of zero or more Books (defined above).
+
+type NutritionScore {
+  ketoScore: KetoScore
+  glucoseImpact: GlucoseImpact
+}
+
+enum GlucoseImpact {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+  UNKNOWN
+}
+
+enum KetoScore {
+  KETO
+  MAYBE_KETO
+  NOT_KETO
+  UNKNOWN
+}
+
 type Query {
-  ingredients: [Ingredient]
+  ingredients(search: String): [Ingredient]
   ingredient(id: ID!): Ingredient
 }

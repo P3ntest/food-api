@@ -22,7 +22,6 @@ model Ingredient {
 
   nutritionalFacts Json
 
-  packages          Packaging[]
   recipeIngredients RecipeIngredient[]
 }
 
@@ -34,19 +33,6 @@ model ServingSize {
 
   amount Float // in grams for solid ingredients, in milliliters for fluid ingredients
   unit   String
-}
-
-model Packaging {
-  id String @id @default(cuid())
-
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId String
-
-  barcode String?
-
-  amount Float // in grams for solid ingredients, in milliliters for fluid ingredients
-
-  price Float?
 }
 
 model Recipe {
