@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ingredient {
+  id String @id @default(cuid())
+
+  name    String
+  brand   String?
+  natural Boolean @default(false)
+  fluid   Boolean @default(false)
+
+  servingSizes ServingSize[]
+
+  nutritionalFacts Json
+
+  packages          Packaging[]
+  recipeIngredients RecipeIngredient[]
+}
+
+model ServingSize {
+  id String @id @default(cuid())
+
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String
+
+  amount Float // in grams for solid ingredients, in milliliters for fluid ingredients
+  unit   String
+}
+
+model Packaging {
+  id String @id @default(cuid())
+
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String
+
+  barcode String?
+
+  amount Float // in grams for solid ingredients, in milliliters for fluid ingredients
+
+  price Float?
+}
+
+model Recipe {
+  id String @id @default(cuid())
+
+  name         String
+  description  String?
+  instructions String?
+
+  ingredients RecipeIngredient[]
+}
+
+model RecipeIngredient {
+  id String @id @default(cuid())
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipeId String
+
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String
+
+  amount Float // in grams for solid ingredients, in milliliters for fluid ingredients
+}
